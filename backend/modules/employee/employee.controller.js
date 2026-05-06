@@ -90,10 +90,10 @@ export const createEmployee = async (req, res, next) => {
             });
         }
 
-        res.status(201).json(employee);
+        return res.status(201).json(employee);
     } catch (error) {
         console.error('CRITICAL ONBOARDING FAILURE:', error);
-        next(error);
+        return next(error);
     }
 };
 
@@ -138,12 +138,12 @@ export const deleteEmployee = async (req, res, next) => {
             console.log("Associated User account permanently erased");
         }
 
-        res.json({ 
+        return res.json({ 
             message: 'Employee and login account permanently erased from system',
             id: req.params.id 
         });
     } catch (error) {
         console.error('CRITICAL Hard Delete Error:', error);
-        next(error);
+        return next(error);
     }
 };
