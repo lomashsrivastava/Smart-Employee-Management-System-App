@@ -13,7 +13,7 @@ const AccessSheets: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [currentEmp, setCurrentEmp] = useState<any>(null);
 
-    const API_URL = 'http://localhost:5000/api/v1/employee';
+    const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1') + '/employee';
     const token = localStorage.getItem('ems_token');
     const [armedId, setArmedId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);

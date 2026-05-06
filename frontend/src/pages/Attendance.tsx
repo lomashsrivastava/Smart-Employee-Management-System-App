@@ -22,7 +22,8 @@ const Attendance: React.FC<{ role: string }> = ({ role }) => {
 
   const fetchEmployees = useCallback(async () => {
     try {
-        const { data } = await axios.get('http://localhost:5000/api/v1/employee', {
+        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+        const { data } = await axios.get(`${BASE_URL}/employee`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setEmployees(data);
@@ -34,7 +35,8 @@ const Attendance: React.FC<{ role: string }> = ({ role }) => {
   const fetchAttendance = useCallback(async (empId?: string) => {
     try {
       setLoading(true);
-      const url = empId ? `http://localhost:5000/api/v1/attendance?employeeId=${empId}` : 'http://localhost:5000/api/v1/attendance';
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+      const url = empId ? `${BASE_URL}/attendance?employeeId=${empId}` : `${BASE_URL}/attendance`;
       const { data } = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` }
       });
@@ -86,7 +88,8 @@ const Attendance: React.FC<{ role: string }> = ({ role }) => {
   const adminMark = async (date: string, status: string) => {
     if (!selectedEmp) return;
     try {
-        await axios.post('http://localhost:5000/api/v1/attendance/admin-mark', {
+        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+        await axios.post(`${BASE_URL}/attendance/admin-mark`, {
             employeeId: selectedEmp._id,
             date,
             status
@@ -100,7 +103,8 @@ const Attendance: React.FC<{ role: string }> = ({ role }) => {
   const deleteRecord = async (id: string) => {
     if (!window.confirm("Remove this attendance record?")) return;
     try {
-        await axios.delete(`http://localhost:5000/api/v1/attendance/${id}`, {
+        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+        await axios.delete(`${BASE_URL}/attendance/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         fetchAttendance(selectedEmp?._id);

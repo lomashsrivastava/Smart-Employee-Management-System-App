@@ -140,7 +140,8 @@ const Leave: React.FC<{ role: string }> = ({ role }) => {
                     <div className="flex justify-end gap-2">
                         <button 
                             onClick={async () => {
-                                await axios.put(`http://localhost:5000/api/v1/leave/${leave._id}/status`, { status: 'APPROVED' }, { headers: { Authorization: `Bearer ${localStorage.getItem('ems_token')}` } });
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+await axios.put(`${BASE_URL}/leave/${leave._id}/status`, { status: 'APPROVED' }, { headers: { Authorization: `Bearer ${localStorage.getItem('ems_token')}` } });
                                 fetchLeaves();
                             }}
                             className="px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase hover:bg-emerald-500 hover:text-white transition-all"
@@ -149,7 +150,7 @@ const Leave: React.FC<{ role: string }> = ({ role }) => {
                         </button>
                         <button 
                             onClick={async () => {
-                                await axios.put(`http://localhost:5000/api/v1/leave/${leave._id}/status`, { status: 'REJECTED' }, { headers: { Authorization: `Bearer ${localStorage.getItem('ems_token')}` } });
+await axios.put(`${BASE_URL}/leave/${leave._id}/status`, { status: 'REJECTED' }, { headers: { Authorization: `Bearer ${localStorage.getItem('ems_token')}` } });
                                 fetchLeaves();
                             }}
                             className="px-4 py-2 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-xl text-[10px] font-black uppercase hover:bg-rose-500 hover:text-white transition-all"

@@ -7,7 +7,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 const DEPARTMENTS = ["Engineering", "Human Resources", "Finance", "Sales", "Marketing", "Management"];
-const API_URL = 'http://localhost:5000/api/v1/employee';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1') + '/employee';
 
 const Employees: React.FC<{ role: 'ADMIN' | 'EMPLOYEE' }> = ({ role }) => {
   const [employees, setEmployees] = useState<any[]>([]);
