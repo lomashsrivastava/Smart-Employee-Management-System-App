@@ -70,16 +70,23 @@ docker-compose exec backend node seed.js --force
 
 ---
 
-## ☁️ Deployment (Render)
+---
 
-This project is **Render-ready** using the `render.yaml` (Blueprint) specification.
+## ☁️ Deployment
 
-1. **Fork/Push** this repository to your GitHub.
-2. Log in to [Render.com](https://render.com/).
-3. Click **"New"** -> **"Blueprint"**.
-4. Connect your GitHub repository.
-5. Render will automatically detect the `render.yaml` and provision 5 services: `ems-nginx`, `ems-frontend`, `ems-backend`, `ems-ai-service`, and `ems-redis`.
-6. **Environment Variables**: In the Render Dashboard, go to the `ems-backend` service settings and manually add your `MONGO_URI` (from MongoDB Atlas) and `JWT_SECRET`.
+### 1. Frontend (Netlify)
+Netlify is the best choice for hosting the "Neural" UI.
+1. **Connect Repository**: Log in to [Netlify](https://www.netlify.com/) and select "Import from GitHub".
+2. **Build Settings**:
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+3. **Environment Variables**: Add `VITE_API_URL` and set it to your **Render Backend URL** (e.g., `https://ems-backend.onrender.com/api/v1`).
+
+### 2. Backend & AI (Render)
+Use the `render.yaml` (Blueprint) to deploy the backend services.
+1. **Blueprint**: In [Render](https://render.com/), click "New" -> "Blueprint" and connect your repo.
+2. **Configuration**: Render will provision `ems-backend`, `ems-ai-service`, and `ems-redis`.
+3. **Manual Settings**: In the `ems-backend` settings, add `MONGO_URI` and `JWT_SECRET`.
 
 
 ---
