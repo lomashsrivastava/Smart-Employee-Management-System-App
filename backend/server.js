@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
 
 // Security & Middlewares
 app.use(helmet());
-app.use(cors({ origin: [process.env.CLIENT_URL || 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'], credentials: true }));
+app.use(cors({ origin: [process.env.CLIENT_URL || 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'https://lsems.netlify.app'], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(mongoSanitize());
