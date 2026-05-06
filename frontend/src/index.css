@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Space+Grotesk:wght@300..700&display=swap");
+@import "tailwindcss";
+
+
+:root {
+    --bg-dark: #020617;
+    --card-dark: rgba(15, 23, 42, 0.6);
+    --accent-red: #ef4444;
+    --accent-crimson: #991b1b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+}
+
+* {
+    font-family: "Outfit", "Space Grotesk", sans-serif;
+    letter-spacing: -0.01em;
+}
+
+body {
+    @apply bg-[#020617] text-slate-100 antialiased overflow-x-hidden;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(239, 68, 68, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(153, 27, 27, 0.05) 0px, transparent 50%);
+}
+
+@layer utilities {
+    /* Hyper-Premium Glassmorphism */
+    .glass-morphism {
+        @apply bg-slate-900/40 backdrop-blur-2xl border border-white/5 shadow-2xl;
+    }
+    
+    .glass-card {
+        @apply bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-3xl p-6 transition-all duration-500 hover:bg-white/[0.05] hover:border-red-500/20 shadow-xl;
+    }
+
+    .glass-card-light {
+        @apply bg-white/95 backdrop-blur-3xl border border-white/40 rounded-[2.5rem] p-8 transition-all duration-700 hover:shadow-[0_0_50px_rgba(239,68,68,0.1)] shadow-2xl text-slate-900;
+        box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    .glass-card-red {
+        @apply bg-red-500/10 backdrop-blur-3xl border border-red-400/30 rounded-[2.5rem] p-8 transition-all duration-700 hover:shadow-[0_0_50px_rgba(239,68,68,0.2)] shadow-2xl;
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(153, 27, 27, 0.1) 100%);
+    }
+
+    .futuristic-border {
+        @apply relative rounded-[2.5rem] overflow-hidden;
+    }
+
+    .futuristic-border::before {
+        content: "";
+        @apply absolute -inset-[100%] bg-gradient-to-r from-transparent via-red-400/50 to-transparent;
+        animation: rotate-border 4s linear infinite;
+    }
+
+    @keyframes rotate-border {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Futuristic Buttons - Red Theme */
+    .btn-futuristic {
+        @apply relative px-5 py-2.5 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 active:scale-95 shadow-lg shadow-red-500/20 border border-white/10 text-xs;
+        background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+    }
+    
+    .btn-futuristic:hover {
+        @apply shadow-xl shadow-red-500/40 -translate-y-0.5;
+        background: linear-gradient(135deg, #f87171 0%, #b91c1c 100%);
+    }
+
+    .btn-outline-futuristic {
+        @apply px-5 py-2.5 rounded-xl font-bold border border-white/10 text-slate-300 transition-all duration-300 hover:bg-white/5 hover:border-red-500/20 hover:text-white text-xs;
+    }
+
+    /* Text Gradients */
+    .text-gradient-red {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-rose-600;
+    }
+
+    /* Glow Effects */
+    .glow-red {
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+    }
+
+    /* Animations */
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .shimmer {
+        @apply relative overflow-hidden;
+    }
+    .shimmer::after {
+        content: "";
+        @apply absolute inset-0 -translate-x-full;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        100% { transform: translateX(100%); }
+    }
+
+    .animate-data-flow {
+        background: linear-gradient(90deg, transparent, #ef4444, transparent);
+        background-size: 200% 100%;
+        animation: data-flow 2s linear infinite;
+    }
+
+    @keyframes data-flow {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    .rotate-glow {
+        animation: rotate-glow 10s linear infinite;
+    }
+
+    @keyframes rotate-glow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .glow-pulse-red {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+        animation: glow-pulse-red 3s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse-red {
+        0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+        50% { box-shadow: 0 0 50px rgba(239, 68, 68, 0.5); }
+    }
+
+    .animate-pulse-subtle {
+        animation: pulse-subtle 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-subtle {
+        0%, 100% { opacity: 0.8; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    .holographic-glow {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700;
+}
+
+@layer base {
+    input, select, textarea {
+        @apply w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-slate-100 placeholder:text-slate-500 outline-none transition-all focus:bg-white/[0.08] focus:ring-2 focus:ring-red-500/20 focus:border-red-500/50;
+    }
+
+    input.login-input, select.login-input, textarea.login-input {
+        @apply bg-slate-50 border-slate-200 text-slate-950 placeholder:text-slate-400 focus:bg-white focus:ring-red-500/10 focus:border-red-500;
+    }
+
+    select.login-input option {
+        @apply bg-white text-slate-950;
+    }
+}
+
+
+
+label {
+    @apply block text-sm font-semibold text-slate-400 mb-2 ml-2;
+}
+
+
