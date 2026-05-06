@@ -19,6 +19,18 @@ export const connectDB = async () => {
             });
             console.log('Default Admin Created: admin@lems.com / admin12@lems.com');
         }
+
+        // DROP STALE UNIQUE INDEXES (Required when removing 'unique: true' from Mongoose)
+        try {
+            const Employee = mongoose.model('Employee');
+            await User.collection.dropIndex('email_1');
+            console.log('User Email Index Dropped');
+            await Employee.collection.dropIndex('email_1');
+            console.log('Employee Email Index Dropped');
+        } catch (e) {
+            // Index might already be gone or not exist
+            console.log('Index cleanup note:', e.message);
+        }
     } catch (error) {
         console.error(`Error: ${error.message}`);
         process.exit(1);
