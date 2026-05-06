@@ -27,10 +27,39 @@ const seedDB = async () => {
             role: 'ADMIN'
         });
 
-        console.log('Database Initialized with Admin account: admin@lems.com');
+        // Create Demo Staff
+        const staffEmail = 'demo.staff@lems.com';
+        const staffPass = 'staff123';
+        
+        const staffUser = await User.create({
+            email: staffEmail,
+            password: staffPass,
+            role: 'EMPLOYEE'
+        });
+
+        await Employee.create({
+            userId: staffUser._id,
+            employeeId: 'EMP001',
+            firstName: 'Demo',
+            lastName: 'Member',
+            email: staffEmail,
+            phone: '9876543210',
+            aadhaarCard: '1234 5678 9012',
+            panCard: 'ABCDE1234F',
+            gender: 'Male',
+            department: 'Engineering',
+            position: 'Senior Developer',
+            basicSalary: 85000,
+            employmentStatus: 'ACTIVE',
+            joinDate: new Date()
+        });
+
+        console.log('Database Initialized:');
+        console.log('Admin: admin@lems.com / admin12@lems.com');
+        console.log('Staff: 1234 5678 9012 / ABCDE1234F (Aadhaar/PAN)');
         process.exit();
     } catch (error) {
-        console.error(`${error}`);
+        console.error(`Error: ${error}`);
         process.exit(1);
     }
 };

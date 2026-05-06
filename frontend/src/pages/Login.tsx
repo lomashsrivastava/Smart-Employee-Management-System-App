@@ -70,6 +70,18 @@ const Login: React.FC = () => {
     }
   };
 
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPass, setAdminPass] = useState('');
+
+  const quickLoginAdmin = () => {
+    setAdminEmail('admin@lems.com');
+    setAdminPass('admin12@lems.com');
+    setTimeout(() => {
+        const form = document.querySelector('form');
+        if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 relative overflow-hidden">
       {/* Premium System Title */}
@@ -88,6 +100,7 @@ const Login: React.FC = () => {
               <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2, delay: 1 }} className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]" />
           </div>
       </motion.div>
+
 
       {/* Background Neural Web */}
       <div className="absolute inset-0 opacity-20">
@@ -160,18 +173,40 @@ const Login: React.FC = () => {
                         type="email" 
                         placeholder="Admin Email Node" 
                         className="w-full py-4 px-8 text-sm bg-white/10 border border-white/20 rounded-full focus:bg-white/20 transition-all placeholder:text-white/40 outline-none text-white font-black" 
+                        value={adminEmail}
+                        onChange={(e) => setAdminEmail(e.target.value)}
                         required 
                     />
                     <input 
                         type="password" 
                         placeholder="Security Password" 
                         className="w-full py-4 px-8 text-sm bg-white/10 border border-white/20 rounded-full focus:bg-white/20 transition-all placeholder:text-white/40 outline-none text-white font-black" 
+                        value={adminPass}
+                        onChange={(e) => setAdminPass(e.target.value)}
                         required 
                     />
                     <button type="submit" className="w-full bg-white text-red-900 py-4 rounded-full font-black uppercase tracking-widest text-xs shadow-xl hover:scale-105 active:scale-95 transition-all">
                         Enter Admin
                     </button>
                 </form>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.5 }}
+                    className="mt-6 p-4 bg-black/20 border border-white/10 rounded-2xl backdrop-blur-sm cursor-pointer hover:bg-black/30 transition-all group/demo"
+                    onClick={quickLoginAdmin}
+                >
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <Sparkles size={12} className="text-red-400" />
+                        <p className="text-[9px] font-black text-white uppercase tracking-widest">Demo Intelligence</p>
+                    </div>
+                    <div className="space-y-1 text-[8px] font-bold uppercase tracking-tighter text-red-200/60">
+                        <p className="flex justify-between">Node: <span className="text-white">admin@lems.com</span></p>
+                        <p className="flex justify-between">Key: <span className="text-white">admin12@lems.com</span></p>
+                    </div>
+                    <p className="mt-2 text-[7px] font-black text-red-500 uppercase tracking-[0.2em] animate-pulse">Click to Auto-Initialize</p>
+                </motion.div>
             </div>
         </motion.div>
 
