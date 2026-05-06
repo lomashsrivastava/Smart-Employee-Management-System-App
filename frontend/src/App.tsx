@@ -29,9 +29,16 @@ import Chatbot from './components/Chatbot';
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [role, setRole] = useState<'ADMIN' | 'EMPLOYEE'>((localStorage.getItem('ems_role') as any) || 'ADMIN');
+  const [role, setRole] = useState<'ADMIN' | 'EMPLOYEE' | null>((localStorage.getItem('ems_role') as any) || null);
   const user = JSON.parse(localStorage.getItem('ems_user') || '{}');
   const isLoginPage = location.pathname === '/login';
+
+  // Redirect to login if not authenticated
+  React.useEffect(() => {
+    if (!role && !isLoginPage) {
+      navigate('/login');
+    }
+  }, [role, isLoginPage, navigate]);
 
   const logout = () => {
     localStorage.removeItem('ems_role');
@@ -72,6 +79,8 @@ function App() {
         </Routes>
     );
   }
+
+  if (!role) return null;
 
   return (
     <div className="h-screen flex bg-[#020617] text-slate-100 selection:bg-red-500/30 selection:text-red-200 overflow-hidden">
