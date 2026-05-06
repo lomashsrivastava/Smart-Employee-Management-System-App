@@ -19,6 +19,13 @@ The central hub for managing global operations, tracking staff counts, and viewi
 The system initializes in a clean state, ready for your custom data entry via the Admin Panel.
 ![Clean Dashboard](images/clean_dashboard.png)
 
+### 📂 Module Gallery
+| **Attendance Tracking** | **Payroll Management** |
+|:---:|:---:|
+| ![Attendance](images/Screenshot%202026-05-03%20020111.png) | ![Payroll](images/Screenshot%202026-05-03%20020139.png) |
+| **Leave Requests** | **Employee Onboarding** |
+| ![Leave](images/Screenshot%202026-05-03%20020115.png) | ![Onboarding](images/Screenshot%202026-05-03%20020124.png) |
+
 ---
 
 ## ✨ Key Features
