@@ -45,7 +45,10 @@ export const createEmployee = async (req, res, next) => {
         const password = panCard || 'password123';
 
         // Check if user exists by email or Aadhaar
-        let user = await User.findOne({ $or: [{ email }, { employeeId }, { aadhaarCard }] });
+        const query = { $or: [{ employeeId }, { aadhaarCard }] };
+        if (email) query.$or.push({ email });
+        
+        let user = await User.findOne(query);
         
         if (!user) {
             // Create user automatically for login
