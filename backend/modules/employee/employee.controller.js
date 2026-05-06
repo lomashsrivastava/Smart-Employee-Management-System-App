@@ -44,22 +44,24 @@ export const createEmployee = async (req, res, next) => {
         const employeeId = aadhaarCard;
         const password = panCard || 'password123';
 
-        // Check if user exists by email or Aadhaar
-        const query = { $or: [{ employeeId }, { aadhaarCard }] };
-        if (email) query.$or.push({ email });
-        
-        let user = await User.findOne(query);
+        // Check if user exists by Aadhaar (Primary ID)
+        let user = await User.findOne({ $or: [{ employeeId }, { aadhaarCard }] });
         
         if (!user) {
-            // Create user automatically for login
             user = await User.create({
                 email,
                 employeeId,
                 aadhaarCard,
                 panCard,
-                password: password, // PAN Card is the password
+                password: password,
                 role: 'EMPLOYEE'
             });
+        } else {
+            // Update existing user to ensure they are active and have correct credentials
+            user.isActive = true;
+            if (email) user.email = email;
+            user.panCard = panCard;
+            await user.save();
         }
 
         // Data Sanitization
@@ -68,12 +70,25 @@ export const createEmployee = async (req, res, next) => {
         if (!sanitizedBody.joinDate) delete sanitizedBody.joinDate;
         if (!sanitizedBody.basicSalary) sanitizedBody.basicSalary = 0;
 
-        const employee = await Employee.create({
-            ...sanitizedBody,
-            userId: user._id,
-            employeeId,
-            password: password
-        });
+        // Check if Employee record exists (perhaps soft-deleted)
+        let employee = await Employee.findOne({ $or: [{ employeeId }, { aadhaarCard }] });
+
+        if (employee) {
+            // Update/Restore existing employee
+            employee = await Employee.findByIdAndUpdate(employee._id, {
+                ...sanitizedBody,
+                isDeleted: false,
+                employmentStatus: 'ACTIVE',
+                userId: user._id
+            }, { new: true });
+        } else {
+            employee = await Employee.create({
+                ...sanitizedBody,
+                userId: user._id,
+                employeeId,
+                password: password
+            });
+        }
 
         res.status(201).json(employee);
     } catch (error) {
@@ -114,14 +129,22 @@ export const deleteEmployee = async (req, res, next) => {
         console.log("Found Employee:", employee.firstName, employee.lastName);
 
         // Soft delete and deactivate user
+        const originalAadhaar = employee.aadhaarCard;
         employee.isDeleted = true;
         employee.employmentStatus = 'TERMINATED';
+        // Append DELETED suffix to free up the Aadhaar number for new entries
+        employee.aadhaarCard = `DEL_${Date.now()}_${originalAadhaar}`;
+        employee.employeeId = employee.aadhaarCard;
         await employee.save();
-        console.log("Employee marked as deleted");
+        console.log("Employee marked as deleted and Aadhaar freed");
 
         if (employee.userId) {
-            await User.findByIdAndUpdate(employee.userId, { isActive: false });
-            console.log("Associated User account deactivated");
+            await User.findByIdAndUpdate(employee.userId, { 
+                isActive: false,
+                aadhaarCard: `DEL_${Date.now()}_${originalAadhaar}`,
+                employeeId: `DEL_${Date.now()}_${originalAadhaar}`
+            });
+            console.log("Associated User account deactivated and ID freed");
         }
 
         res.json({ 
