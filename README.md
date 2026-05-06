@@ -70,15 +70,17 @@ docker-compose exec backend node seed.js --force
 
 ---
 
-## ☁️ Deployment (Railway)
+## ☁️ Deployment (Render)
 
-This project is **Railway-ready**. To deploy:
+This project is **Render-ready** using the `render.yaml` (Blueprint) specification.
 
 1. **Fork/Push** this repository to your GitHub.
-2. Log in to [Railway.app](https://railway.app/).
-3. Click **"New Project"** -> **"Deploy from GitHub repo"**.
-4. Railway will detect the `docker-compose.yml` and set up the multi-service stack.
-5. **Environment Variables**: Add your `MONGO_URI` and `JWT_SECRET` in the Railway dashboard for the `backend` service.
+2. Log in to [Render.com](https://render.com/).
+3. Click **"New"** -> **"Blueprint"**.
+4. Connect your GitHub repository.
+5. Render will automatically detect the `render.yaml` and provision 5 services: `ems-nginx`, `ems-frontend`, `ems-backend`, `ems-ai-service`, and `ems-redis`.
+6. **Environment Variables**: In the Render Dashboard, go to the `ems-backend` service settings and manually add your `MONGO_URI` (from MongoDB Atlas) and `JWT_SECRET`.
+
 
 ---
 

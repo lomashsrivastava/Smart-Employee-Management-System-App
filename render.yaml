@@ -1,0 +1,56 @@
+services:
+  # 1. Nginx Reverse Proxy (Main Entry Point)
+  - type: web
+    name: ems-nginx
+    runtime: docker
+    dockerfilePath: ./Dockerfile.nginx
+    plan: free
+    envVars:
+      - key: PORT
+        value: 80
+    # Connects to other services via their internal hostnames
+
+  # 2. Frontend
+  - type: web
+    name: ems-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        value: /api/v1
+
+  # 3. Backend API
+  - type: web
+    name: ems-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # Set this in Render Dashboard (Atlas URI)
+      - key: REDIS_URL
+        value: redis://ems-redis:6379
+      - key: AI_SERVICE_URL
+        value: http://ems-ai-service:8000
+      - key: JWT_SECRET
+        sync: false # Set this in Render Dashboard
+
+  # 4. AI Microservice
+  - type: web
+    name: ems-ai-service
+    runtime: docker
+    dockerfilePath: ./ai-service/Dockerfile
+    plan: free
+
+  # 5. Redis (Private Service)
+  - type: pservice
+    name: ems-redis
+    runtime: docker
+    dockerfilePath: ./Dockerfile.redis
+    plan: free # Note: Private services might require a paid plan on Render, 
+               # but 'pservice' is the correct type for internal communication.
