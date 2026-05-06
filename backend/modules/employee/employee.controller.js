@@ -128,31 +128,22 @@ export const deleteEmployee = async (req, res, next) => {
 
         console.log("Found Employee:", employee.firstName, employee.lastName);
 
-        // Soft delete and deactivate user
-        const originalAadhaar = employee.aadhaarCard;
-        employee.isDeleted = true;
-        employee.employmentStatus = 'TERMINATED';
-        // Append DELETED suffix to free up the Aadhaar number for new entries
-        employee.aadhaarCard = `DEL_${Date.now()}_${originalAadhaar}`;
-        employee.employeeId = employee.aadhaarCard;
-        await employee.save();
-        console.log("Employee marked as deleted and Aadhaar freed");
+        // Hard delete employee and user
+        const userId = employee.userId;
+        await Employee.findByIdAndDelete(req.params.id);
+        console.log("Employee record permanently erased");
 
-        if (employee.userId) {
-            await User.findByIdAndUpdate(employee.userId, { 
-                isActive: false,
-                aadhaarCard: `DEL_${Date.now()}_${originalAadhaar}`,
-                employeeId: `DEL_${Date.now()}_${originalAadhaar}`
-            });
-            console.log("Associated User account deactivated and ID freed");
+        if (userId) {
+            await User.findByIdAndDelete(userId);
+            console.log("Associated User account permanently erased");
         }
 
         res.json({ 
-            message: 'Employee terminated and access revoked',
-            id: employee._id 
+            message: 'Employee and login account permanently erased from system',
+            id: req.params.id 
         });
     } catch (error) {
-        console.error('CRITICAL Delete Employee Error:', error);
+        console.error('CRITICAL Hard Delete Error:', error);
         next(error);
     }
 };
